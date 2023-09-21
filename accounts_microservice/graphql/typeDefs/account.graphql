@@ -1,0 +1,16 @@
+type Account {
+  id: Int!
+  userId: String!
+  expenses: Int
+}
+
+type AccountInput {
+  userId: String!
+  expenses: Int
+}
+
+type Query {
+  account(id: Int!): Account
+  accounts: [Account]
+}
+
