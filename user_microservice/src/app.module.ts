@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
-let mongo_url = "mongodb://localhost/user_microservice"
+let mongo_url = "mongodb://mongodb/user_microservice"
 
 import { GraphQLModule, Resolver } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -18,11 +18,12 @@ if(process.env.DB_USER  && process.env.DB_PASS )
 console.log("mongo_url",mongo_url);
 @Module({
   imports: [UserModule,
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   include:[UserModule],
-    //   driver: ApolloDriver,
-    //   playground: false,
-    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      include:[UserModule],
+      driver: ApolloDriver,
+      playground: false,
+      typePaths: ["./**/*.graphql"]
+    }),
     MongooseModule.forRoot(mongo_url),
 ],
   controllers: [AppController],

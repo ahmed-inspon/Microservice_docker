@@ -7,7 +7,8 @@ import * as NRP from 'node-redis-pubsub'
 type Document = UserDocument;
 const nrp =  NRP({
     port:6379,
-    scope:'microservice'
+    scope:'microservice',
+    host:'redis'
 })
 @Injectable()
 export class UserService {

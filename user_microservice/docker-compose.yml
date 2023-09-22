@@ -1,0 +1,37 @@
+version: '3.5'
+
+services:
+  db:
+    image:  mongo
+    container_name: db_mongo
+    hostname: mongodb
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user-ms-container
+    environment:
+      - PORT=${PORT}
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./src:/app/src
+
+volumes:
+  mongodata: 
