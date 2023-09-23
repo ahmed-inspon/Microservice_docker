@@ -26,11 +26,15 @@ const bootstrapServer = async() =>{
     app.use(cors())
     app.use(express.json())
     app.use(express.urlencoded({extended:true}))
-    app.use('/accounts_microservice',expressMiddleware(server))
+    app.use('/graphql',expressMiddleware(server))
     app.get('/accounts' , (req:Request,res:Response)=>{
-        res.json({success:false ,accounts:[]})
+        res.json({success:false ,accounts:[],version:'2'})
     })
     
+    app.get('/',(req,res)=>{
+        return res.send("<h1>This is an Accounts Microservice</h1>")
+    })
+
     app.listen(port,()=>{
         console.log("server running at ",port)
     });
@@ -45,6 +49,8 @@ const bootstrapServer = async() =>{
         })
         console.log("New Account Created for ",data.firstName)
     });
+
+    
 
 
 }

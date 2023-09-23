@@ -17,6 +17,6 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return redirect()->action([HomeController::class, 'index']);
+    return response('<h1>This is  a Contacts Microservice</h1>',200)->header('Content-Type', 'text/html');
 });
 

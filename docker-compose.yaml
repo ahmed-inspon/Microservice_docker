@@ -18,6 +18,9 @@ services:
     volumes:
       - ./contacts_microservice/source:/var/www/html:delegated
     depends_on:
+      - postgres
+      - accounts_app
+      - user_app
       - php
       - mysql
     networks:
@@ -31,7 +34,6 @@ services:
     volumes:
       - ./contacts_microservice/source:/var/www/html:delegated
       # Enable xdebug
-      - ./contacts_microservice/compose/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     ports:
       - "9000:9000"
     networks:
@@ -77,12 +79,27 @@ services:
 
   db:
     image:  mongo
-    container_name: db_mongo
+    container_name: mongodb
     hostname: mongodb
     volumes:
       - mongodata:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - laravel
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - laravel
 
   mysql:
     image: mysql:5.7.29
@@ -99,6 +116,8 @@ services:
       MYSQL_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    networks:
+      - laravel
 
   redis:
     image: "redis:alpine"
@@ -107,6 +126,8 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+    networks:
+      - laravel
 
   user_app:
     build:
@@ -120,6 +141,8 @@ services:
     depends_on:
       - db
       - redis
+    networks:
+      - laravel
     # volumes:
     #   - ./user_microservice/src:/app/src
   
@@ -128,11 +151,18 @@ services:
       context: ./accounts_microservice
       dockerfile: Dockerfile
     container_name: accounts-ms-container
+    command: npm run start:prod
     ports:
       - "3002:3002"
+    links: 
+      - mysql
     depends_on:
       - mysql
       - redis
+    networks:
+      - laravel
+    
 
 volumes:
-  mongodata: 
+  mongodata:
+  pgdata: 

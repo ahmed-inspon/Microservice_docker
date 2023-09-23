@@ -6,11 +6,12 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npx prisma generate
+# RUN npx prisma generate
 
 COPY . .
 
 EXPOSE 3002
+# Set the entrypoint script as the command to run
+COPY entrypoint.sh ./
 
-RUN npx prisma generate
-CMD ["npm","run","start"]
+ENTRYPOINT ["./entrypoint.sh"]

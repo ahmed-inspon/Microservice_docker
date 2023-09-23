@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DataTables;
-use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,7 +19,7 @@ class ContactsController extends Controller
     public function index(Request $request)
     {
        
-            $contacts = User::select('*')->where('level','!=', 0)->orderByDesc('created_at');
+            $contacts = Contact::select('*')->where('level','!=', 0)->orderByDesc('created_at');
             
             return response()->json(['success'=>true,'contacts'=>$contacts]);
        
@@ -27,7 +27,7 @@ class ContactsController extends Controller
 
     public function store(Request $request)
     {
-        User::updateOrCreate(['id' => $request->user_id],
+        Contact::updateOrCreate(['id' => $request->user_id],
                 [
                  'name' => $request->name,
                  'email' => $request->email,
@@ -35,14 +35,14 @@ class ContactsController extends Controller
                  'password' => Hash::make($request->password),
                 ]);        
 
-        return response()->json(['success'=>'User saved successfully!']);
+        return response()->json(['success'=>'Contact saved successfully!']);
     }
 
 
     public function edit($id)
     {
-        $User = User::find($id);
-        return response()->json($User);
+        $Contact = Contact::find($id);
+        return response()->json($Contact);
 
     }
 
@@ -50,7 +50,7 @@ class ContactsController extends Controller
 
     public function destroy($id)
     {
-        User::find($id)->delete();
+        Contact::find($id)->delete();
 
         return response()->json(['success'=>'Contact deleted!']);
     }
