@@ -10,7 +10,7 @@
     "start": "node ./output/index.js",
     "preserve": "npm run build",
     "serve": "concurrently \"npx tsc -w\"  \"nodemon ./output/index.js\" ",
-    "generate:prisma": "npx prisma migrate dev --name init",
+    "generate:prisma": "npx prisma migrate deploy",
     "start:prod": "npm run generate:prisma && npm run dist/main"
   },
   "keywords": [],

@@ -41,13 +41,13 @@ const bootstrapServer = async() =>{
 
     //Redis Pubsub
     nrp.on("new_user",(data:any)=>{
-        prisma.account.create({
+        let created = prisma.account.create({
             data:{
                 userId:data._id,
                 expenses:(Math.random()*9999)
             }
         })
-        console.log("New Account Created for ",data.firstName)
+        console.log("New Account Created for ",created,data.firstName)
     });
 
     

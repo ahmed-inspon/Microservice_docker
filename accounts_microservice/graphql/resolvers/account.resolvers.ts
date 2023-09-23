@@ -1,4 +1,4 @@
-  import {GraphQLResolveInfo} from "graphql";
+import {GraphQLResolveInfo} from "graphql";
 import { getAccount, getAccounts } from "../services/account.service";
   export const AccountResolver = {
     Query:{

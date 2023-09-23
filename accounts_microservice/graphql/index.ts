@@ -7,6 +7,6 @@ export const typeDefs = readFileSync(path.join(process.cwd(),"./graphql/typeDefs
 
 export const resolvers = {
     Query:{
-        ...AccountResolver.Query
+        ...AccountResolver.Query,
     }
 }
