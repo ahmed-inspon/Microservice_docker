@@ -23,6 +23,7 @@ services:
       - user_app
       - php
       - mysql
+      - mysql_second
     networks:
       - laravel
     
@@ -36,6 +37,10 @@ services:
       # Enable xdebug
     ports:
       - "9000:9000"
+    depends_on:
+      - mysql_second
+      - artisan
+      - mysql
     networks:
       - laravel
 
@@ -116,6 +121,27 @@ services:
       MYSQL_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    networks:
+      - laravel
+
+  mysql_second:
+    image: mysql:5.7.29
+    container_name: mysql_second
+    restart: unless-stopped
+    tty: true
+    hostname: mysql_second
+    ports:
+      - "3307:3306"
+    expose:
+      - "3306"
+      - "3307"
+    environment:
+      MYSQL_DATABASE: contacts_microservice
+      MYSQL_USER: root 
+      MYSQL_PASSWORD: secret 
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql_second
     networks:
       - laravel
 

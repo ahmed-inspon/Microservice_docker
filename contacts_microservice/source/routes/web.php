@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\ContactsController;
 
 
 /*
@@ -15,6 +15,8 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/get_all_contacts',[ContactsController::class,'index']);
+Route::post('/add_contact',[ContactsController::class,'store']);
 
 Route::get('/', function () {
     return response('<h1>This is  a Contacts Microservice</h1>',200)->header('Content-Type', 'text/html');

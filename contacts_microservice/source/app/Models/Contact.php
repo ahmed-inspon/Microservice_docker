@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class Contact extends Authenticatable
 {
     use HasFactory, Notifiable;
-    private $table = 'contacts';
+    protected $table = 'contacts';
     /**
      * The attributes that are mass assignable.
      *

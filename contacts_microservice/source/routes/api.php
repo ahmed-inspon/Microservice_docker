@@ -15,4 +15,7 @@ use App\Http\Controllers\ContactsController;
 |
 */
 
-Route::resource('contacts', ContactsController::class);
+Route::get('/', function () {
+    return response('<h1>This is  a Contacts Micasasaroservice</h1>',200)->header('Content-Type', 'text/html');
+});
+

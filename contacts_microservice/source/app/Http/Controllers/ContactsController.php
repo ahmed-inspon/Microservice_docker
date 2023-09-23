@@ -19,7 +19,7 @@ class ContactsController extends Controller
     public function index(Request $request)
     {
        
-            $contacts = Contact::select('*')->where('level','!=', 0)->orderByDesc('created_at');
+            $contacts = Contact::all();
             
             return response()->json(['success'=>true,'contacts'=>$contacts]);
        
@@ -27,31 +27,14 @@ class ContactsController extends Controller
 
     public function store(Request $request)
     {
-        Contact::updateOrCreate(['id' => $request->user_id],
+       $contact =  Contact::updateOrCreate(['id' => $request->user_id],
                 [
                  'name' => $request->name,
-                 'email' => $request->email,
-                 'level' => $request->level,
-                 'password' => Hash::make($request->password),
+                 'phone' => $request->phone,
+                 'address' => $request->address,
+                 'userId' => $request->userId,
                 ]);        
 
-        return response()->json(['success'=>'Contact saved successfully!']);
-    }
-
-
-    public function edit($id)
-    {
-        $Contact = Contact::find($id);
-        return response()->json($Contact);
-
-    }
-
-
-
-    public function destroy($id)
-    {
-        Contact::find($id)->delete();
-
-        return response()->json(['success'=>'Contact deleted!']);
+        return response()->json(['success'=>'Contact saved successfully!','contact'=>$contact]);
     }
 }
