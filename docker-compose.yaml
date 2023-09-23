@@ -1,0 +1,64 @@
+version: '3.5'
+
+services:
+  db:
+    image:  mongo
+    container_name: db_mongo
+    hostname: mongodb
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    hostname: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME} 
+      MYSQL_PASSWORD: ${DB_PASSWORD} 
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  user_app:
+    build:
+      context: ./user_microservice
+      dockerfile: Dockerfile
+    container_name: user-ms-container
+    environment:
+      - PORT=${USER_MS_PORT}
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - redis
+    # volumes:
+    #   - ./user_microservice/src:/app/src
+  
+  accounts_app:
+    build:
+      context: ./accounts_microservice
+      dockerfile: Dockerfile
+    container_name: accounts-ms-container
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mysql
+      - redis
+
+volumes:
+  mongodata: 

@@ -10,7 +10,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const nrp = NRP({
     port:6379,
-    scope:'microservice'
+    scope:'microservice',
+    host:'redis'
 })
 const app:Express = express();
 
